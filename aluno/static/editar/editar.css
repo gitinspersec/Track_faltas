@@ -1,0 +1,113 @@
+body {
+    background-color: #dee9ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.registration-form {
+    padding: 50px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.registration-form form {
+    background-color: #fff;
+    max-width: 400px;
+    width: 100%;
+    margin: auto;
+    padding: 50px 40px;
+    border-radius: 30px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.075);
+}
+
+.registration-form .form-icon {
+    text-align: center;
+    background-color: #b92929;
+    border-radius: 50%;
+    font-size: 40px;
+    color: white;
+    width: 80px;
+    height: 80px;
+    margin: auto;
+    margin-bottom: 20px;
+    line-height: 80px;
+}
+
+/* Estilo para os campos de entrada */
+.registration-form input[type="text"],
+.registration-form input[type="email"],
+.registration-form input[type="password"],
+.registration-form textarea,
+.registration-form select {
+    border-radius: 20px;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Estilo dos botões */
+.registration-form button {
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #b92929;
+    border: none;
+    color: white;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.registration-form button:hover {
+    background-color: #ff0000;
+}
+
+/* Estilo do botão cancelar */
+.registration-form .cancel-button {
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: gainsboro;
+
+    border: none;
+    color: white;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+    color: #555;
+
+
+
+}
+
+/* Estilo para ajustar o <p> gerado pelo {{ form.as_p }} */
+.registration-form p {
+    margin: 0;
+
+}
+
+/* Estilo do label */
+.registration-form label {
+    display: none;
+}
+
+@media (max-width: 576px) {
+    .registration-form form {
+        padding: 40px 20px;
+    }
+
+    .registration-form .form-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 30px;
+        line-height: 60px;
+    }
+}

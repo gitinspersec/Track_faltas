@@ -1,0 +1,92 @@
+{% extends "aluno/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col col-sm-3 col-xs-12">
+                            <h4 class="title">Track <span>Faltas</span></h4>
+                        </div>
+                        <div class="col-sm-9 col-xs-12 text-right">
+                            <div class="btn_group">
+                                <a href="/log_faltas" class="btn btn-default" title="log_faltas"><i class="fa-solid fa-calendar"></i></a>
+                                <a href="{% url 'download_excel' %}" class="btn btn-default" title="Excel"><i class="fas fa-file-excel"></i></a>
+                                <a href="/registrar_aluno" class="btn btn-default" title="add_aluno"><i class="fa-solid fa-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nome Completo</th>
+                                <th style="text-align: center;">Faltas</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for aluno in alunos %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ aluno.name }}</td>
+                                <td style="text-align: center;">{{ aluno.numero_de_faltas }}</td>
+                                <td>
+                                    <form method="post" action="{% url 'adicionar_falta' aluno.id %}" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="icon-button" title="Adicionar Falta">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </form>
+                                    <form method="post" action="{% url 'remover_falta' aluno.id %}" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="icon-button" title="Remover Falta">
+                                            <i class="fa-solid fa-minus"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<style>
+@media only screen and (max-width: 767px) {
+    .panel .panel-heading .title {
+        text-align: center;
+        margin: 0 0 10px;
+    }
+
+    .panel .panel-heading .btn_group {
+        text-align: center;
+    }
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: inherit;
+}
+
+.icon-button:focus {
+    outline: none;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+</style>

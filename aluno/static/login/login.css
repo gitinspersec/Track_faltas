@@ -1,0 +1,47 @@
+/* Arquivo CSS: styles.css */
+.custom-card {
+    background-color: #f5f5f5; /* Substitua pela cor que desejar */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Adiciona uma sombra suave */
+    border-radius: 20px; /* Ajuste o raio das bordas se necessário */
+}
+
+/* Estiliza o título do formulário */
+h2.text-dark {
+    color: #333; /* Substitua pela cor que desejar */
+}
+
+/* Estiliza o botão de login */
+.btn.btn-color {
+    background-color: #b92929; /* Cor de fundo do botão */
+    color: #fff; /* Cor do texto do botão */
+    border: none;
+    border-radius: 10px;
+}
+
+/* Estiliza o formulário */
+.cardbody-color {
+    background-color: transparent;
+}
+
+@media only screen and (max-width: 767px) {
+    .card.my-5.custom-card {
+        margin: 0 15px;
+    }
+
+    .text-center.text-dark.mt-5 {
+        text-align: center;
+        margin: 0 0 10px;
+    }
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: inherit;
+}
+
+.icon-button:focus {
+    outline: none;
+}
