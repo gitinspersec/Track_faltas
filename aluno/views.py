@@ -12,9 +12,11 @@ from .models import Aluno, Faltas
 
 # Login
 
-def redirecionar(request):
-    print(f"usuario salvo: {request.user.username}")
-    return redirect("accounts/login")
+def redirecionar_user(request):
+    return redirect("menu_faltas_user")
+
+def redirecionar_login(request):
+    return redirect("login")
 
 def login(request):
     if request.method == 'POST':
@@ -45,6 +47,14 @@ def menu_faltas(request):
     
     all_alunos = Aluno.objects.all().order_by('name')  # Ordena os alunos pelo nome
     return render(request, 'aluno/menu_faltas_user.html', {'alunos': all_alunos})
+
+def menu_faltas_user(request):
+    all_alunos = Aluno.objects.all().order_by('name')  # Ordena os alunos pelo nome
+    return render(request, 'aluno/menu_faltas_user.html', {'alunos': all_alunos})
+
+def log_faltas_user(request):
+    all_alunos = Aluno.objects.all().order_by('name')
+    return render(request, 'aluno/log_faltas_user.html', {'alunos': all_alunos})
 
 @login_required
 def log_faltas(request):
