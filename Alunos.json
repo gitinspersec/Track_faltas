@@ -1,0 +1,135 @@
+[
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Alex Assumpção",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Artur Rizzi",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Bruno Saboya",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Carolina Eskenazi",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Eduardo Barros",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Enzo Davi",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Enzo Quental",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Felipe Bakowski",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Felipe Frug",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Gabrielly Carneiro",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Gustavo Lindenberg",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Henrique Andrade",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Henrique Rocha",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "João Gabriel",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "João Pedro Sarti",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Marcelo Peñas",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Matheus Almeida",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Sergio Ramella",
+            "faltas": []
+        }
+    },
+    {
+        "model": "aluno.aluno",
+        "fields": {
+            "name": "Vitor Tanaka",
+            "faltas": []
+        }
+    }
+]

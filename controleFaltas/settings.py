@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'aluno.apps.AlunoConfig',
     'rest_framework',
+    'compressor',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',  # Certifique-se de que este middleware está incluído
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 
@@ -80,10 +82,16 @@ WSGI_APPLICATION = "controleFaltas.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "inspersec$default",  # Nome do banco de dados
+        "USER": "inspersec",          # Nome de usuário
+        "PASSWORD": "databasesec",  # Substitua pela senha MySQL que você configurou
+        "HOST": "inspersec.mysql.pythonanywhere-services.com",  # Host do banco de dados
+        "PORT": "3306",                 # Porta padrão do MySQL
     }
 }
+
+
 
 
 # Password validation
@@ -124,7 +132,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'  # Deve terminar com "/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Define o local de coleta
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'compressor.finders.CompressorFinder',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

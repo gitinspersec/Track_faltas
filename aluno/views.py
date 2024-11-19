@@ -20,7 +20,6 @@ def redirecionar_login(request):
 def login(request):
     if request.method == 'POST':
         username = request.POST.get('name')
-        print(username)
         
         try:
             aluno = Aluno.objects.get(name=username)
@@ -41,27 +40,27 @@ def menu_faltas(request):
         return redirect('login')
     
     if request.user.is_superuser:
-        all_alunos = Aluno.objects.all().order_by('name')  # Ordena os alunos pelo nome
+        all_alunos =  Aluno.objects.select_related().order_by('name')  # Ordena os alunos pelo nome
         return render(request, 'aluno/menu_faltas.html', {'alunos': all_alunos})
     
-    all_alunos = Aluno.objects.all().order_by('name')  # Ordena os alunos pelo nome
+    all_alunos =  Aluno.objects.select_related().order_by('name')  # Ordena os alunos pelo nome
     return render(request, 'aluno/menu_faltas_user.html', {'alunos': all_alunos})
 
 def menu_faltas_user(request):
-    all_alunos = Aluno.objects.all().order_by('name')  # Ordena os alunos pelo nome
+    all_alunos =  Aluno.objects.select_related().order_by('name')  # Ordena os alunos pelo nome
     return render(request, 'aluno/menu_faltas_user.html', {'alunos': all_alunos})
 
 def log_faltas_user(request):
-    all_alunos = Aluno.objects.all().order_by('name')
+    all_alunos =  Aluno.objects.select_related().order_by('name')
     return render(request, 'aluno/log_faltas_user.html', {'alunos': all_alunos})
 
 @login_required
 def log_faltas(request):
     if request.user.is_superuser:
-        all_alunos = Aluno.objects.all().order_by('name')
+        all_alunos =  Aluno.objects.select_related().order_by('name')
         return render(request, 'aluno/log_faltas.html', {'alunos': all_alunos})
     
-    all_alunos = Aluno.objects.all().order_by('name')
+    all_alunos =  Aluno.objects.select_related().order_by('name')
     return render(request, 'aluno/log_faltas_user.html', {'alunos': all_alunos})
 
 
@@ -72,7 +71,6 @@ def adicionar_falta(request, aluno_id):
     aluno = get_object_or_404(Aluno, id=aluno_id)
     # Cria uma nova instância de falta com a data atual
     nova_falta = Faltas.objects.create(data=date.today())
-    # Adiciona a nova falta ao conjunto de faltas do aluno
     aluno.faltas.add(nova_falta)
     aluno.save()
     messages.success(request, f'Falta adicionada para {aluno.name}.')
