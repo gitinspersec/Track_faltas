@@ -10,7 +10,6 @@ from .models import Aluno, Faltas
 
 
 
-# Login
 
 def redirecionar_user(request):
     return redirect("menu_faltas_user")
