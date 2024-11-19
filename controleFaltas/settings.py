@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'aluno.apps.AlunoConfig',
     'rest_framework',
     'compressor',
+    'django.middleware.gzip.GZipMiddleware',
 ]
 
 MIDDLEWARE = [
