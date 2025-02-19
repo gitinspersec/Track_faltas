@@ -14,7 +14,7 @@ class Aluno(models.Model):
     password= models.CharField(max_length=200,null=True)
     isAdmin = models.BooleanField(default=False)
     faltas = models.ManyToManyField(Faltas, blank=True)
-    semesters = models.CharField(max_length=1,null=True)
+    semestre = models.CharField(max_length=1,null=True)
 
     def __str__(self):
         return f'{self.id}. {self.name}'

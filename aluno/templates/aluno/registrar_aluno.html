@@ -1,10 +1,8 @@
-
 {% load static %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'registrar/registrar.css' %}">
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
 <!-- Font Awesome for Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 {% endblock %}
@@ -20,16 +18,18 @@
         <div ng-app ng-init="checked = false">
             <form class="form-signin" action="" method="post" name="form">
                 {% csrf_token %}
-                <label for="fullname">Nome Completo</label>
-                <input class="form-styling" type="text" name="username" placeholder="Digite o nome do aluno" />
+                <label for="username">Nome Completo</label>
+                <input class="form-styling" type="text" name="username" id="username" placeholder="Digite o nome do aluno" required />
+                
+                <label for="semestre">Semestre</label>
+                <input class="form-styling" type="number" name="semestre" id="semestre" placeholder="Digite o semestre" required />
+                
                 <div class="btn-animate">
                     <button type="submit" class="btn-signin">Registrar</button>
                 </div>
             </form>
-
-
+        </div>
     </div>
-
 </div>
 {% endblock %}
 

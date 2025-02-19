@@ -14,5 +14,8 @@ urlpatterns = [
     path('registrar_aluno/', views.registrar_aluno, name='registrar_aluno'),
     path('download_excel/', views.download_excel, name='download_excel'),
     path('aluno/deletar/<int:aluno_id>/', views.deletar_aluno, name='deletar_aluno'),
-     path('login/', views.redirecionar_login, name='redirecionar_login'),
+    path('login/', views.redirecionar_login, name='redirecionar_login'),
+    path('menu_faltas/semestre/<str:semestre>/', views.menu_faltas_filtrado, name='menu_faltas_filtrado'),
+
+
 ]

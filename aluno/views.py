@@ -46,6 +46,35 @@ def menu_faltas(request):
     all_alunos =  Aluno.objects.select_related().order_by('name')  # Ordena os alunos pelo nome
     return render(request, 'aluno/menu_faltas_user.html', {'alunos': all_alunos})
 
+
+@login_required
+def menu_faltas_filtrado(request, semestre):
+    if semestre in ['1', '2']:
+        alunos = Aluno.objects.filter(semestre=semestre).order_by('name')
+    else:
+        alunos = Aluno.objects.all().order_by('name')
+    template = 'aluno/menu_faltas.html' if request.user.is_superuser else 'aluno/menu_faltas_user.html'
+    return render(request, template, {'alunos': alunos, 'semestre': semestre})
+
+@login_required
+def menu_faltas_primeiro(request):
+    print(request.user)
+
+    # Verifica se o usuário está autenticado
+    if not request.user.is_authenticated:
+        print("Não está autenticado")
+        return redirect('login')
+
+    # Se for superusuário, exibe todos os alunos sem filtro
+    if request.user.is_superuser:
+        all_alunos = Aluno.objects.order_by('name').filter(semestre="1")  # Mantém todos os alunos
+        return render(request, 'aluno/menu_faltas.html', {'alunos': all_alunos})
+
+    # Usuário comum: apenas alunos do primeiro semestre
+    all_alunos = Aluno.objects.filter(semestre="1").order_by('name')  # Filtra alunos do semestre "1"
+    return render(request, 'aluno/menu_faltas_user.html', {'alunos': all_alunos})
+
+
 def menu_faltas_user(request):
     all_alunos =  Aluno.objects.select_related().order_by('name')  # Ordena os alunos pelo nome
     return render(request, 'aluno/menu_faltas_user.html', {'alunos': all_alunos})
@@ -74,7 +103,13 @@ def adicionar_falta(request, aluno_id):
     aluno.faltas.add(nova_falta)
     aluno.save()
     messages.success(request, f'Falta adicionada para {aluno.name}.')
-    return redirect('menu_faltas')
+
+    # Recupera a URL de redirecionamento a partir do parâmetro "next"
+    next_url = request.GET.get('next', None)
+    if next_url:
+        return redirect(next_url)
+    else:
+        return redirect('menu_faltas')
 
 @login_required
 def remover_falta(request, aluno_id):
@@ -88,7 +123,13 @@ def remover_falta(request, aluno_id):
         messages.success(request, f'Falta removida para {aluno.name}.')
     else:
         messages.error(request, f'O aluno {aluno.name} não tem faltas para remover.')
-    return redirect('menu_faltas')
+    
+    # Recupera a URL de redirecionamento a partir do parâmetro "next"
+    next_url = request.GET.get('next')
+    if next_url:
+        return redirect(next_url)
+    else:
+        return redirect('menu_faltas')
 
 @login_required
 def editar(request, aluno_id):
@@ -121,10 +162,12 @@ def editar(request, aluno_id):
 def registrar_aluno(request):
     if request.method == 'POST':
         username = request.POST.get('username')
+        semestre = request.POST.get('semestre')  # Recupera o valor do semestre
         
         if username:
-            # Cria uma nova instância do aluno e salva no banco de dados
-            aluno = Aluno.objects.create(name=username)
+            # Cria uma nova instância do aluno e salva no banco de dados,
+            # incluindo o semestre informado
+            aluno = Aluno.objects.create(name=username, semestre=semestre)
             aluno.save()
             messages.success(request, 'Aluno registrado com sucesso!')
             return redirect('menu_faltas')
@@ -185,3 +228,7 @@ def download_excel(request):
     # Salvando o workbook no response
     workbook.save(response)
     return response
+
+def menu_faltas_user_primeiro(request):
+    all_alunos = Aluno.objects.filter(semestre="1").order_by('name')  # Filtra alunos com semestre "1"
+    return render(request, 'aluno/menu_faltas_user_primeiro.html', {'alunos': all_alunos})

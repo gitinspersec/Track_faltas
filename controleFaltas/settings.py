@@ -23,9 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-#j29y+ote^*e@7le9cx*bs+_@9b4dth0igzm)a8_266w*qw8fl"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['inspersec.pythonanywhere.com']
+ALLOWED_HOSTS = ['inspersec.pythonanywhere.com', '127.0.0.1', 'localhost']
+
 
 
 
@@ -82,17 +83,23 @@ WSGI_APPLICATION = "controleFaltas.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": "inspersec$default",  # Nome do banco de dados
+#         "USER": "inspersec",          # Nome de usuário
+#         "PASSWORD": "databasesec",  # Substitua pela senha MySQL que você configurou
+#         "HOST": "inspersec.mysql.pythonanywhere-services.com",  # Host do banco de dados
+#         "PORT": "3306",                 # Porta padrão do MySQL
+#     }
+# }
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "inspersec$default",  # Nome do banco de dados
-        "USER": "inspersec",          # Nome de usuário
-        "PASSWORD": "databasesec",  # Substitua pela senha MySQL que você configurou
-        "HOST": "inspersec.mysql.pythonanywhere-services.com",  # Host do banco de dados
-        "PORT": "3306",                 # Porta padrão do MySQL
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / "db.sqlite3",
     }
 }
-
 
 
 

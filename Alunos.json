@@ -3,133 +3,144 @@
         "model": "aluno.aluno",
         "fields": {
             "name": "Alex Assumpção",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "Artur Rizzi",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "Bruno Saboya",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "Carolina Eskenazi",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "Eduardo Barros",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "Enzo Davi",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "Enzo Quental",
-            "faltas": []
-        }
-    },
-    {
-        "model": "aluno.aluno",
-        "fields": {
-            "name": "Felipe Bakowski",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "Felipe Frug",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "Gabrielly Carneiro",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "Gustavo Lindenberg",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "Henrique Andrade",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "Henrique Rocha",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "João Gabriel",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "João Pedro Sarti",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "Marcelo Peñas",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "Matheus Almeida",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "Sergio Ramella",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     },
     {
         "model": "aluno.aluno",
         "fields": {
             "name": "Vitor Tanaka",
-            "faltas": []
+            "faltas": [],
+            "semestre": "2"
         }
     }
 ]
