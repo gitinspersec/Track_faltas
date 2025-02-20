@@ -9,23 +9,21 @@
 
 {% block content %}
 <div class="container">
-    <div class="frame">
-        <div class="nav">
-            <ul class="links">
-                <li class="signin-active"><a class="btn">Registrar Aluno</a></li>
-            </ul>
-        </div>
-        <form class="form-signin" action="" method="post">
+    <div class="frame" role="form">
+        <form class="form-signin" action="" method="post" aria-label="Formulário de Registro de Aluno">
             {% csrf_token %}
+            
+            <h1 class="form-title">Registrar Aluno</h1>
+
+
+
             <label for="username">Nome Completo</label>
-            <input class="form-styling" type="text" name="username" id="username" placeholder="Digite o nome do aluno" required />
+            <input class="form-styling" type="text" name="username" id="username" placeholder="Digite o nome do aluno" required aria-required="true" />
 
             <label for="semestre">Semestre</label>
-            <input class="form-styling" type="number" name="semestre" id="semestre" placeholder="Digite o semestre" min="1" max="2" required />
+            <input class="form-styling" type="number" name="semestre" id="semestre" placeholder="Digite o semestre" min="1" max="2" required aria-required="true" />
 
-            <div class="btn-animate">
-                <button type="submit" class="btn-signin">Registrar</button>
-            </div>
+            <button type="submit" class="btn-animate">Registrar</button>
         </form>
     </div>
 </div>

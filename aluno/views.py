@@ -5,230 +5,173 @@ from django.forms import modelformset_factory
 from django.http import HttpResponse
 from datetime import date
 import openpyxl
-
 from .models import Aluno, Faltas
 
+# Constantes
+MENU_ADMIN_TEMPLATE = 'aluno/menu_faltas.html'
+MENU_USER_TEMPLATE = 'aluno/menu_faltas_user.html'
+LOG_ADMIN_TEMPLATE = 'aluno/log_faltas.html'
+LOG_USER_TEMPLATE = 'aluno/log_faltas_user.html'
+REDIRECT_LOGIN = 'login'
+REDIRECT_MENU = 'menu_faltas'
 
+# Funções Helper
+def _get_template(request, admin_template, user_template):
+    """Retorna o template correto baseado no status de superusuário."""
+    return admin_template if request.user.is_superuser else user_template
 
+def _get_alunos_queryset(semestre=None):
+    """Retorna queryset de alunos com otimização e filtro opcional por semestre, sempre ordenado alfabeticamente."""
+    queryset = Aluno.objects.select_related().prefetch_related('faltas').order_by('name')
+    if semestre in ['1', '2']:
+        queryset = queryset.filter(semestre=semestre)
+    return queryset
 
+# Autenticação e Redirecionamentos
 def redirecionar_user(request):
-    return redirect("menu_faltas_user")
+    """Redireciona para o menu do usuário."""
+    return redirect('menu_faltas_user')
 
 def redirecionar_login(request):
-    return redirect("login")
+    """Redireciona para a página de login."""
+    return redirect(REDIRECT_LOGIN)
 
 def login(request):
+    """Realiza autenticação simples baseada no nome do aluno."""
     if request.method == 'POST':
         username = request.POST.get('name')
-        
         try:
-            aluno = Aluno.objects.get(name=username)
-            return redirect('menu_faltas')
+            Aluno.objects.get(name=username)  # Validação básica
+            return redirect(REDIRECT_MENU)
         except Aluno.DoesNotExist:
             messages.error(request, 'Nome de usuário ou senha incorretos.')
-    
     return render(request, 'aluno/login.html')
 
-
 # Menus
-
 @login_required
 def menu_faltas(request):
-    print(request.user)
-    if not request.user.is_authenticated:
-        print("Não está autenticado")
-        return redirect('login')
-    
-    if request.user.is_superuser:
-        all_alunos =  Aluno.objects.select_related().order_by('name')  # Ordena os alunos pelo nome
-        return render(request, 'aluno/menu_faltas.html', {'alunos': all_alunos})
-    
-    all_alunos =  Aluno.objects.select_related().order_by('name')  # Ordena os alunos pelo nome
-    return render(request, 'aluno/menu_faltas_user.html', {'alunos': all_alunos})
-
+    """Exibe o menu de faltas para admin ou usuário, com alunos em ordem alfabética."""
+    alunos = _get_alunos_queryset()
+    template = _get_template(request, MENU_ADMIN_TEMPLATE, MENU_USER_TEMPLATE)
+    return render(request, template, {'alunos': alunos})
 
 @login_required
 def menu_faltas_filtrado(request, semestre):
-    if semestre in ['1', '2']:
-        alunos = Aluno.objects.filter(semestre=semestre).order_by('name')
-    else:
-        alunos = Aluno.objects.all().order_by('name')
-    template = 'aluno/menu_faltas.html' if request.user.is_superuser else 'aluno/menu_faltas_user.html'
+    """Exibe o menu de faltas filtrado por semestre, com alunos em ordem alfabética."""
+    alunos = _get_alunos_queryset(semestre)
+    template = _get_template(request, MENU_ADMIN_TEMPLATE, MENU_USER_TEMPLATE)
     return render(request, template, {'alunos': alunos, 'semestre': semestre})
 
 @login_required
-def menu_faltas_primeiro(request):
-    print(request.user)
-
-    # Verifica se o usuário está autenticado
-    if not request.user.is_authenticated:
-        print("Não está autenticado")
-        return redirect('login')
-
-    # Se for superusuário, exibe todos os alunos sem filtro
-    if request.user.is_superuser:
-        all_alunos = Aluno.objects.order_by('name').filter(semestre="1")  # Mantém todos os alunos
-        return render(request, 'aluno/menu_faltas.html', {'alunos': all_alunos})
-
-    # Usuário comum: apenas alunos do primeiro semestre
-    all_alunos = Aluno.objects.filter(semestre="1").order_by('name')  # Filtra alunos do semestre "1"
-    return render(request, 'aluno/menu_faltas_user.html', {'alunos': all_alunos})
-
-
 def menu_faltas_user(request):
-    all_alunos =  Aluno.objects.select_related().order_by('name')  # Ordena os alunos pelo nome
-    return render(request, 'aluno/menu_faltas_user.html', {'alunos': all_alunos})
+    """Exibe o menu de faltas para usuários comuns, com alunos em ordem alfabética."""
+    alunos = _get_alunos_queryset()
+    return render(request, MENU_USER_TEMPLATE, {'alunos': alunos})
 
-def log_faltas_user(request):
-    all_alunos =  Aluno.objects.select_related().order_by('name')
-    return render(request, 'aluno/log_faltas_user.html', {'alunos': all_alunos})
-
+# Logs
 @login_required
 def log_faltas(request):
-    if request.user.is_superuser:
-        all_alunos =  Aluno.objects.select_related().order_by('name')
-        return render(request, 'aluno/log_faltas.html', {'alunos': all_alunos})
-    
-    all_alunos =  Aluno.objects.select_related().order_by('name')
-    return render(request, 'aluno/log_faltas_user.html', {'alunos': all_alunos})
-
-
-# Adicionar e remover e editar faltas
+    """Exibe o log de faltas para admin ou usuário, com alunos em ordem alfabética."""
+    alunos = _get_alunos_queryset()
+    template = _get_template(request, LOG_ADMIN_TEMPLATE, LOG_USER_TEMPLATE)
+    return render(request, template, {'alunos': alunos})
 
 @login_required
+def log_faltas_user(request):
+    """Exibe o log de faltas para usuários comuns, com alunos em ordem alfabética."""
+    alunos = _get_alunos_queryset()
+    return render(request, LOG_USER_TEMPLATE, {'alunos': alunos})
+
+# Gerenciamento de Faltas
+@login_required
 def adicionar_falta(request, aluno_id):
+    """Adiciona uma nova falta para o aluno especificado."""
     aluno = get_object_or_404(Aluno, id=aluno_id)
-    # Cria uma nova instância de falta com a data atual
     nova_falta = Faltas.objects.create(data=date.today())
     aluno.faltas.add(nova_falta)
-    aluno.save()
     messages.success(request, f'Falta adicionada para {aluno.name}.')
-
-    # Recupera a URL de redirecionamento a partir do parâmetro "next"
-    next_url = request.GET.get('next', None)
-    if next_url:
-        return redirect(next_url)
-    else:
-        return redirect('menu_faltas')
+    return redirect(request.GET.get('next', REDIRECT_MENU))
 
 @login_required
 def remover_falta(request, aluno_id):
+    """Remove a falta mais recente do aluno especificado."""
     aluno = get_object_or_404(Aluno, id=aluno_id)
-    # Remove a falta mais recente (ou a última) do aluno, se houver
     if aluno.faltas.exists():
-        falta_mais_recente = aluno.faltas.last()
-        aluno.faltas.remove(falta_mais_recente)
-        if not falta_mais_recente.aluno_set.exists():
-            falta_mais_recente.delete()
+        falta = aluno.faltas.last()
+        aluno.faltas.remove(falta)
+        if not falta.aluno_set.exists():
+            falta.delete()
         messages.success(request, f'Falta removida para {aluno.name}.')
     else:
         messages.error(request, f'O aluno {aluno.name} não tem faltas para remover.')
-    
-    # Recupera a URL de redirecionamento a partir do parâmetro "next"
-    next_url = request.GET.get('next')
-    if next_url:
-        return redirect(next_url)
-    else:
-        return redirect('menu_faltas')
+    return redirect(request.GET.get('next', REDIRECT_MENU))
 
 @login_required
 def editar(request, aluno_id):
+    """Edita os dados do aluno e suas faltas."""
     aluno = get_object_or_404(Aluno, id=aluno_id)
     FaltasFormSet = modelformset_factory(Faltas, fields=('data',), extra=0)
-    
+
     if request.method == 'POST':
-        
-        # Atualiza o nome do aluno, se fornecido
         aluno.name = request.POST.get('name', aluno.name)
         aluno.save()
-        
-        # Formset para editar as datas das faltas
         formset = FaltasFormSet(request.POST, queryset=aluno.faltas.all())
-
         if formset.is_valid():
-            # Salva cada instância de falta editada
             formset.save()
-            # Reassocia as faltas ao aluno, garantindo que as alterações sejam salvas
             messages.success(request, f'Dados atualizados para {aluno.name}.')
             return redirect('log_faltas')
         else:
             messages.error(request, 'Erro ao salvar as alterações nas datas das faltas.')
     else:
         formset = FaltasFormSet(queryset=aluno.faltas.all())
-    
+
     return render(request, 'aluno/editar.html', {'aluno': aluno, 'formset': formset})
 
+# Gerenciamento de Alunos
 @login_required
 def registrar_aluno(request):
+    """Registra um novo aluno com nome e semestre, capitalizando a primeira letra de cada palavra."""
     if request.method == 'POST':
         username = request.POST.get('username')
-        semestre = request.POST.get('semestre')  # Recupera o valor do semestre
-        
-        if username:
-            # Cria uma nova instância do aluno e salva no banco de dados,
-            # incluindo o semestre informado
-            aluno = Aluno.objects.create(name=username, semestre=semestre)
-            aluno.save()
+        semestre = request.POST.get('semestre')
+        if username and semestre in ['1', '2']:
+            # Capitaliza a primeira letra de cada palavra no nome
+            username_capitalized = username.strip().title()
+            Aluno.objects.create(name=username_capitalized, semestre=semestre)
             messages.success(request, 'Aluno registrado com sucesso!')
-            return redirect('menu_faltas')
+            return redirect(REDIRECT_MENU)  # Redireciona para menu_faltas, que já ordena alfabeticamente
         else:
-            messages.error(request, 'O nome do aluno não pode estar vazio.')
-    
+            messages.error(request, 'Nome ou semestre inválido.')
     return render(request, 'aluno/registrar_aluno.html')
-
-
 
 @login_required
 def deletar_aluno(request, aluno_id):
+    """Deleta um aluno e suas faltas associadas, se não usadas por outros."""
     aluno = get_object_or_404(Aluno, id=aluno_id)
-
-    faltas_do_aluno = list(aluno.faltas.all())
-
+    faltas = list(aluno.faltas.all())
     aluno.delete()
-    
-    for falta in faltas_do_aluno:
-        if not falta.aluno_set.exists():  # Verifica se a falta está associada a outros alunos
-            falta.delete()  # Deleta a falta do banco de dados
-
+    for falta in faltas:
+        if not falta.aluno_set.exists():
+            falta.delete()
     messages.success(request, f'Aluno {aluno.name} foi excluído com sucesso.')
     return redirect('log_faltas')
 
-
-
+# Exportação
+@login_required
 def download_excel(request):
-    # Cria um novo workbook e ativa a planilha
+    """Gera e retorna um arquivo Excel com o registro de faltas, em ordem alfabética."""
     workbook = openpyxl.Workbook()
     sheet = workbook.active
     sheet.title = "Faltas dos Alunos"
-
-    # Cabeçalhos das colunas
     sheet.append(["Nome do Aluno", "Data da Falta", "Quantidade de Faltas"])
 
-    # Consulta o banco de dados para obter todos os alunos com faltas
-    alunos = Aluno.objects.prefetch_related('faltas').all()
-
-    # Preenchendo a planilha com dados do banco de dados
+    alunos = _get_alunos_queryset()  # Já ordenado alfabeticamente
     for aluno in alunos:
         faltas = aluno.faltas.all()
-        if faltas.exists():
-            # Junta todas as datas de faltas em uma única string, separadas por vírgulas e espaços
-            faltas_texto = ", ".join([falta.data.strftime("%d/%m/%Y") for falta in faltas])
-            quantidade_faltas = faltas.count()
-            sheet.append([aluno.name, faltas_texto, quantidade_faltas])
-        else:
-            # Se o aluno não tiver faltas, coloca "Nenhuma falta presente" e quantidade de faltas como 0
-            sheet.append([aluno.name, "", 0])
+        faltas_texto = ", ".join([falta.data.strftime("%d/%m/%Y") for falta in faltas]) if faltas.exists() else ""
+        sheet.append([aluno.name, faltas_texto, faltas.count()])
 
-    # Configurando a resposta como um arquivo Excel
-    response = HttpResponse(
-        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    )
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename="faltas_alunos.xlsx"'
-    
-    # Salvando o workbook no response
     workbook.save(response)
     return response
-
-def menu_faltas_user_primeiro(request):
-    all_alunos = Aluno.objects.filter(semestre="1").order_by('name')  # Filtra alunos com semestre "1"
-    return render(request, 'aluno/menu_faltas_user_primeiro.html', {'alunos': all_alunos})
