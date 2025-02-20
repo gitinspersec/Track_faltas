@@ -1,6 +1,8 @@
 {% extends "aluno/base.html" %}
 {% load static %}
 
+{% block title %}Menu de Faltas - Usuário{% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
@@ -13,8 +15,8 @@
                         </div>
                         <div class="col-sm-9 col-xs-12 text-right">
                             <div class="btn_group">
-                                <a href="/log_faltas_user" class="btn btn-default" title="log_faltas"><i class="fa-solid fa-calendar"></i></a>
-                                <a href="/login" class="btn btn-default" title="log_faltas"><i class="fa-solid fa-right-to-bracket"></i></a>
+                                <a href="/log_faltas_user" class="btn btn-default" title="Log de Faltas"><i class="fa-solid fa-calendar"></i></a>
+                                <a href="/login" class="btn btn-default" title="Logout"><i class="fa-solid fa-right-to-bracket"></i></a>
                             </div>
                         </div>
                     </div>
@@ -44,33 +46,3 @@
     </div>
 </div>
 {% endblock %}
-
-<style>
-@media only screen and (max-width: 767px) {
-    .panel .panel-heading .title {
-        text-align: center;
-        margin: 0 0 10px;
-    }
-
-    .panel .panel-heading .btn_group {
-        text-align: center;
-    }
-}
-
-.icon-button {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    color: inherit;
-}
-
-.icon-button:focus {
-    outline: none;
-}
-
-.container {
-    display: flex;
-    justify-content: center;
-}
-</style>

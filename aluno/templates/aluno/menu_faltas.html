@@ -1,6 +1,8 @@
 {% extends "aluno/base.html" %}
 {% load static %}
 
+{% block title %}Menu de Faltas - Admin{% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
@@ -13,28 +15,20 @@
                         </div>
                         <div class="col-sm-9 col-xs-12 text-right">
                             <div class="btn_group">
-                                <a href="/menu_faltas" class="btn btn-default" title="Menu">
-                                    <i class="fa-solid fa-house"></i>
-                                <a href="/log_faltas" class="btn btn-default" title="log de faltas">
-                                    <i class="fa-solid fa-calendar"></i>
-                                </a>
-                                <a href="{% url 'download_excel' %}" class="btn btn-default" title="Excel">
-                                    <i class="fas fa-file-excel"></i>
-                                </a>
-                                <a href="/registrar_aluno" class="btn btn-default" title="Adicionar aluno">
-                                    <i class="fa-solid fa-plus"></i>
-                                </a>
-                                <!-- Dropdown para seleção de semestre -->
+                                <a href="/menu_faltas" class="btn btn-default" title="Menu"><i class="fa-solid fa-house"></i></a>
+                                <a href="/log_faltas" class="btn btn-default" title="Log de Faltas"><i class="fa-solid fa-calendar"></i></a>
+                                <a href="{% url 'download_excel' %}" class="btn btn-default" title="Exportar Excel"><i class="fas fa-file-excel"></i></a>
+                                <a href="/registrar_aluno" class="btn btn-default" title="Adicionar Aluno"><i class="fa-solid fa-plus"></i></a>
                                 <div class="dropdown d-inline-block">
                                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuSemestre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Semestre
+                                        {% if semestre %}{% if semestre == '1' %}1º Semestre{% elif semestre == '2' %}2º Semestre{% else %}Semestre{% endif %}{% else %}Semestre{% endif %}
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuSemestre">
                                         <a class="dropdown-item" href="{% url 'menu_faltas_filtrado' '1' %}">1º Semestre</a>
                                         <a class="dropdown-item" href="{% url 'menu_faltas_filtrado' '2' %}">2º Semestre</a>
                                     </div>
                                 </div>
-                            </div><!-- .btn_group -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -57,15 +51,11 @@
                                 <td>
                                     <form method="post" action="{% url 'adicionar_falta' aluno.id %}?next={{ request.get_full_path }}" style="display: inline;">
                                         {% csrf_token %}
-                                        <button type="submit" class="icon-button" title="Adicionar Falta">
-                                            <i class="fa-solid fa-plus"></i>
-                                        </button>
+                                        <button type="submit" class="icon-button" title="Adicionar Falta"><i class="fa-solid fa-plus"></i></button>
                                     </form>
                                     <form method="post" action="{% url 'remover_falta' aluno.id %}?next={{ request.get_full_path }}" style="display: inline;">
                                         {% csrf_token %}
-                                        <button type="submit" class="icon-button" title="Remover Falta">
-                                            <i class="fa-solid fa-minus"></i>
-                                        </button>
+                                        <button type="submit" class="icon-button" title="Remover Falta"><i class="fa-solid fa-minus"></i></button>
                                     </form>
                                 </td>
                             </tr>
@@ -78,32 +68,3 @@
     </div>
 </div>
 {% endblock %}
-
-<style>
-@media only screen and (max-width: 767px) {
-    .panel .panel-heading .title {
-        text-align: center;
-        margin: 0 0 10px;
-    }
-    .panel .panel-heading .btn_group {
-        text-align: center;
-    }
-}
-
-.icon-button {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    color: inherit;
-}
-
-.icon-button:focus {
-    outline: none;
-}
-
-.container {
-    display: flex;
-    justify-content: center;
-}
-</style>
